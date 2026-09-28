@@ -6,6 +6,8 @@ This repository contains my daily solutions to the **Unstop 30 Days Coding Chall
 
 The goal of this challenge is to improve my problem-solving skills, strengthen my understanding of **Data Structures & Algorithms**, and maintain consistency by solving one problem every day.
 
+🔗 **Practice:** https://unstop.com/practice/coding
+
 ---
 
 ## 📌 Challenge Overview
@@ -15,6 +17,11 @@ The goal of this challenge is to improve my problem-solving skills, strengthen m
 **Language:** C++
 **Duration:** 30 Days
 **Focus:** Data Structures & Algorithms
+
+### 🔥 Streak
+
+* **Current Streak:** **30 Days** 🔥
+* **Max Streak:** **30 Days** 🏆
 
 ### 🎯 Goals
 
@@ -115,6 +122,11 @@ This repository represents my journey of solving **one coding problem every day 
 
 The purpose is not only to complete the challenge but also to understand the underlying algorithm and improve my ability to solve unfamiliar problems.
 
+### 🔥 30-Day Streak Completed
+
+**Current Streak:** `30 Days`
+**Max Streak:** `30 Days`
+
 ---
 
 ## 💡 Key Learning
@@ -147,6 +159,11 @@ Understanding complexity helps me write solutions that are not only correct but 
 ### ✅ 30 Days — 30 Problems
 
 This repository documents my complete **Unstop 30 Days Coding Challenge 2026** journey.
+
+I successfully maintained a **30-day coding streak** while solving problems involving different Data Structures & Algorithms.
+
+🔗 **Continue Practicing on Unstop:**
+https://unstop.com/practice/coding
 
 I will continue practicing Data Structures & Algorithms and working on more challenging problems.
 
