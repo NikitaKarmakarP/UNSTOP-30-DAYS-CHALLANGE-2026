@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class BIT {
+    vector<int> tree;
+    int size;
+
+public:
+    BIT(int m) {
+        size = m;
+        tree.assign(size + 1, 0);
+    }
+
+    void add(int index) {
+        while (index <= size) {
+            tree[index]++;
+            index += index & (-index);
+        }
+    }
+
+    int prefixSum(int index) {
+        int ans = 0;
+        while (index > 0) {
+            ans += tree[index];
+            index -= index & (-index);
+        }
+        return ans;
+    }
+};
+
+void user_logic(int n, int k, const vector<int>& scores, vector<int>& results) {
+    vector<int> compressed(scores.begin(), scores.end());
+    sort(compressed.begin(), compressed.end());
+    compressed.erase(unique(compressed.begin(), compressed.end()), compressed.end());
+
+    BIT bit(compressed.size());
+
+    for (int i = 0; i < n; i++) {
+        long long lowValue = 1LL * scores[i] - k;
+        long long highValue = 1LL * scores[i] + k;
+
+        int leftIndex = lower_bound(compressed.begin(), compressed.end(), lowValue) - compressed.begin();
+        int rightIndex = upper_bound(compressed.begin(), compressed.end(), highValue) - compressed.begin();
+
+        results[i] = bit.prefixSum(rightIndex) - bit.prefixSum(leftIndex);
+
+        int currentIndex = lower_bound(compressed.begin(), compressed.end(), scores[i]) - compressed.begin() + 1;
+        bit.add(currentIndex);
+    }
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> scores(n);
+    for (int i = 0; i < n; i++) {
+        cin >> scores[i];
+    }
+
+    vector<int> results(n);
+    user_logic(n, k, scores, results);
+
+    for (int value : results) {
+        cout << value << "\n";
+    }
+
+    return 0;
+}
