@@ -1,0 +1,155 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAXQ 200005
+
+typedef long long ll;
+
+typedef struct {
+    ll id;
+    ll priority;
+    int arrival;
+    int active;
+} Request;
+
+Request requests[MAXQ];
+int heap[MAXQ];
+int heapSize = 0;
+int n = 0;
+
+int comesFirst(int a, int b) {
+    if (requests[a].priority != requests[b].priority)
+        return requests[a].priority > requests[b].priority;
+
+    return requests[a].arrival < requests[b].arrival;
+}
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void heapPush(int idx) {
+    int p = ++heapSize;
+    heap[p] = idx;
+
+    while (p > 1) {
+        int parent = p / 2;
+
+        if (!comesFirst(heap[p], heap[parent]))
+            break;
+
+        swap(&heap[p], &heap[parent]);
+        p = parent;
+    }
+}
+
+int heapPop(void) {
+    int answer = heap[1];
+
+    heap[1] = heap[heapSize--];
+
+    int p = 1;
+
+    while (1) {
+        int left = p * 2;
+        int right = left + 1;
+        int best = p;
+
+        if (left <= heapSize &&
+            comesFirst(heap[left], heap[best])) {
+            best = left;
+        }
+
+        if (right <= heapSize &&
+            comesFirst(heap[right], heap[best])) {
+            best = right;
+        }
+
+        if (best == p)
+            break;
+
+        swap(&heap[p], &heap[best]);
+        p = best;
+    }
+
+    return answer;
+}
+
+int findRequest(ll id) {
+    for (int i = 0; i < n; i++) {
+        if (requests[i].id == id)
+            return i;
+    }
+    return -1;
+}
+
+int main() {
+    int q;
+    scanf("%d", &q);
+
+    while (q--) {
+        char op[10];
+        scanf("%s", op);
+
+        if (strcmp(op, "ADD") == 0) {
+            ll id, priority;
+            scanf("%lld %lld", &id, &priority);
+
+            requests[n].id = id;
+            requests[n].priority = priority;
+            requests[n].arrival = n;
+            requests[n].active = 1;
+
+            heapPush(n);
+            n++;
+        }
+
+        else if (strcmp(op, "UPDATE") == 0) {
+            ll id, priority;
+            scanf("%lld %lld", &id, &priority);
+
+            int idx = findRequest(id);
+
+            if (idx != -1 && requests[idx].active) {
+                requests[idx].priority = priority;
+
+                heapPush(idx);
+            }
+        }
+
+        else if (strcmp(op, "CANCEL") == 0) {
+            ll id;
+            scanf("%lld", &id);
+
+            int idx = findRequest(id);
+
+            if (idx != -1)
+                requests[idx].active = 0;
+        }
+
+        else if (strcmp(op, "DISPATCH") == 0) {
+            int served = -1;
+
+            while (heapSize > 0) {
+                int idx = heapPop();
+
+                if (!requests[idx].active)
+                    continue;
+
+                served = idx;
+                requests[idx].active = 0;
+                break;
+            }
+
+            if (served == -1)
+                printf("-1\n");
+            else
+                printf("%lld\n", requests[served].id);
+        }
+    }
+
+    return 0;
+}
